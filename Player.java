@@ -11,9 +11,13 @@ public class Player {
 
     public boolean takeShotAt(Player player, int row, int col) {
         Square square = player.getBoard().get()[row][col];
-        if (square.getHasShip() && !square.getIsShot()) {
-            square.setIsShot(true);
+        if (square.getIsShot()) {
+            return false;
+        }
+        square.setIsShot(true);
 
+        if (square.getHasShip()) {
+            
             Battleship ship = square.getShip();
             if (ship.getRemainingHitsToSink() - 1 == 0) {
                 ship.setIsSunk(true);
