@@ -30,27 +30,22 @@ public class Main {
         System.out.println("Here are ships locations for " + p2.getName());
         b2.printShips();
 
-        Player attacker = p1;
-        Player defender = p2;
-        
-        while (p1.getOpponentShipsSunk() < 5 && p2.getOpponentShipsSunk() < 5) {
+        s.close();
 
-            System.out.println(attacker.getName() + "'s turn: ");
-            defender.getBoard().print();
-            int row = s.nextInt();
-            int col = s.nextInt();
+        boolean attackerSunkLastShip = false;
+        while (!attackerSunkLastShip) {
+            p2.getBoard().print();
+            attackerSunkLastShip = p1.takeTurn(p2);
 
-            boolean isHit = attacker.takeShotAt(defender, row, col);
-            if (isHit) {
-                System.out.println("On target! Keep going");
-            } else {
-                System.out.println("Missed! ");
-                Player tmp = attacker;
-                attacker = defender;
-                defender = tmp;
-            }
+            p1.getBoard().print();
+            attackerSunkLastShip = p2.takeTurn(p1);
         }
 
-        s.close();
+        if (p1.getOpponentShipsSunk() == p2.getOpponentShipsSunk()) {
+            System.out.println("DRAW");
+        } else {
+            String winner = p1.getOpponentShipsSunk() > p2.getOpponentShipsSunk() ? p1.getName() : p2.getName();
+            System.out.println(winner + "WON");
+        }
     }
 }
