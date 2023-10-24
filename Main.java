@@ -3,13 +3,16 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
-
+        
+        // init boards and add 6 ships of different sizes
+        // init players with corresponding boards
         Board b1 = new Board(10);
-        b1.placeBattleship(5);
-        b1.placeBattleship(4);
-        b1.placeBattleship(3);
-        b1.placeBattleship(2);
-        b1.placeBattleship(1);
+        b1.placeBattleship(new SmallBattleship());
+        b1.placeBattleship(new SmallBattleship());
+        b1.placeBattleship(new SmallBattleship());
+        b1.placeBattleship(new MediumBattleship());
+        b1.placeBattleship(new MediumBattleship());
+        b1.placeBattleship(new LargeBattleship());
 
         System.out.println("Enter first player's name: ");
         String p1Name = s.nextLine();
@@ -18,11 +21,12 @@ public class Main {
         b1.printShips();
 
         Board b2 = new Board(10);
-        b2.placeBattleship(5);
-        b2.placeBattleship(4);
-        b2.placeBattleship(3);
-        b2.placeBattleship(2);
-        b2.placeBattleship(1);
+        b2.placeBattleship(new SmallBattleship());
+        b2.placeBattleship(new SmallBattleship());
+        b2.placeBattleship(new SmallBattleship());
+        b2.placeBattleship(new MediumBattleship());
+        b2.placeBattleship(new MediumBattleship());
+        b2.placeBattleship(new LargeBattleship());
 
         System.out.println("Enter second player's name: ");
         String p2Name = s.nextLine();
@@ -30,22 +34,23 @@ public class Main {
         System.out.println("Here are ships locations for " + p2.getName());
         b2.printShips();
 
-        s.close();
+        System.out.println("--- PLAY ---\n");
 
-        boolean attackerSunkLastShip = false;
-        while (!attackerSunkLastShip) {
-            p2.getBoard().print();
-            attackerSunkLastShip = p1.takeTurn(p2);
-
-            p1.getBoard().print();
-            attackerSunkLastShip = p2.takeTurn(p1);
+        // take turns until the last ship was sunk by any player
+        boolean p1SunkLastShip = false;
+        boolean p2SunkLastShip = false;
+        while (!p1SunkLastShip && !p2SunkLastShip) {
+            p1SunkLastShip = p1.takeTurn(s, p2);
+            p2SunkLastShip = p2.takeTurn(s, p2);
         }
 
+        // print the winner
         if (p1.getOpponentShipsSunk() == p2.getOpponentShipsSunk()) {
-            System.out.println("DRAW");
+            System.out.println(" DRAW");
         } else {
             String winner = p1.getOpponentShipsSunk() > p2.getOpponentShipsSunk() ? p1.getName() : p2.getName();
-            System.out.println(winner + "WON");
+            System.out.println(winner + " WON");
         }
+        s.close();
     }
 }

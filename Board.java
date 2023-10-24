@@ -2,12 +2,15 @@ import java.util.Random;
 
 public class Board {
     private Square[][] board;
+    private int numberOfShips;
 
     public Board(int boardSize) {
         this.board = new Square[boardSize][boardSize];
+        this.numberOfShips = 0;
         fillWithSquares();
     }
 
+    // fill board array with square objects
     public void fillWithSquares() {
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board.length; j++) {
@@ -16,13 +19,21 @@ public class Board {
         }
     }
 
-    public Square[][] get() {
+    public Square[][] getArr() {
         return this.board;
     }
 
-    public void placeBattleship(int shipSize) {
+    public int getNumberOfShips() {
+        return this.numberOfShips;
+    }
 
-        Battleship ship = new Battleship(shipSize);
+    public void setNumberOfShips(int numberOfShips) {
+        this.numberOfShips = numberOfShips;
+    }
+
+    public void placeBattleship(Battleship ship) {
+        
+        int shipSize = ship.getSize();
         Random r = new Random();
         boolean placedSuccessfully = false;
 
@@ -54,6 +65,7 @@ public class Board {
             // fill ship squares and squares surrounding newly placed ship
             fillShipSquares(ship, isVertical, shipSize, shipSquareRow, shipSquareCol);
             fillShipNeighbouringSquares(ship, isVertical, shipSize, shipSquareRow, shipSquareCol);
+            this.setNumberOfShips(this.getNumberOfShips() + 1);
         }
     }
 
@@ -63,6 +75,8 @@ public class Board {
         int shipSquareRow,
         int shipSquareCol
     ) {
+        // iterate over squares around potential ship location
+        // max min are used to process cases when the ship would be on the edge of the board
         boolean isFree = true;
         if (isVertical) {
             for (
@@ -75,6 +89,7 @@ public class Board {
                     j < Math.min(this.board.length, shipSquareCol + 2);
                     j++
                 ) {
+                    // check if square has a ship is if square is another ship neighbour
                     if (
                         this.board[i][j].getHasShip() ||
                         this.board[i][j].getIsBattleshipNeighbour()
@@ -108,7 +123,7 @@ public class Board {
 
         return isFree;
     }
-
+    
     private void fillShipSquares(
         Battleship ship,
         boolean isVertical,
@@ -170,30 +185,19 @@ public class Board {
         }
     }
 
-    public void print() {
+    // prints the board
+    public String toString() {
         String boardStr = "";
         for (Square[] boardRow : this.board) {
             for (Square boardSquare : boardRow) {
-                String cellStr;
-                if (boardSquare.getHasShip() && boardSquare.getIsShot()) {
-                    cellStr = "X";
-                } else if (boardSquare.getIsShot()) {
-                    cellStr = "O";
-                } else {
-                    cellStr = "-";
-                }
-
-                if (boardSquare.getCol() != this.board.length) {
-                    cellStr += " ";
-                }
-
-                boardStr += cellStr;
+                boardStr += boardSquare.toString();
             }
             boardStr += "\n";
         }
-        System.out.println(boardStr);
+        return boardStr;
     }
 
+    // used in the beginning of a game to display fleet location
     public void printShips() {
         String boardStr = "";
         for (Square[] boardRow : this.board) {
@@ -204,12 +208,7 @@ public class Board {
                 } else {
                     cellStr = "-";
                 }
-
-                if (boardSquare.getCol() != this.board.length) {
-                    cellStr += " ";
-                }
-
-                boardStr += cellStr;
+                boardStr += String.format(" %s ", cellStr);
             }
             boardStr += "\n";
         }
