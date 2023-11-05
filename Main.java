@@ -5,7 +5,9 @@ public class Main {
         Scanner s = new Scanner(System.in);
         
         // init boards and add 6 ships of different sizes
-        // init players with corresponding boards
+        // then init players with corresponding boards
+        // each placeBattleship takes in Battleship class reference
+        // since Battleship is a parent class for all ship classes ships of different sizes can be passed
         Board b1 = new Board(10);
         b1.placeBattleship(new SmallBattleship());
         b1.placeBattleship(new SmallBattleship());

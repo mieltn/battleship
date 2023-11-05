@@ -13,11 +13,12 @@ public class Player {
 
     public boolean takeTurn(Scanner s, Player targetPlayer) {
 
-        boolean gameEnded = false;
-        boolean tookTurn = false;
+        boolean gameEnded = false; // used to indicate if all ships were sunk
+        boolean tookTurn = false; // used to indicate the end of turn
 
         // run until user finishes attempt
         while (!tookTurn) {
+            // print current target board
             System.out.println(targetPlayer.getBoard().toString());
             System.out.println(this.getName() + "'s turn: ");
 

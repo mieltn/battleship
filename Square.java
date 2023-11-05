@@ -2,8 +2,8 @@ public class Square {
     private int row;
     private int col;
     private boolean hasBattleship;
-    // used to indicate is a square is a neighbour of another ship
-    // if so, square cannot be used as to place another one
+    // used to indicate if a square is a neighbour of another ship
+    // if so, the square cannot be used to place another ship
     private boolean isBattleshipNeighbour;
     private Battleship battleship;
     private boolean isShot;
@@ -53,6 +53,8 @@ public class Square {
         this.isShot = isShot;
     }
 
+    // formating representation of square
+    // shot, shot and has ship, not shot
     public String toString() {
         String value = "";
         if (this.getIsShot() && this.getHasShip()) {

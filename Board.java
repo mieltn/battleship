@@ -89,7 +89,7 @@ public class Board {
                     j < Math.min(this.board.length, shipSquareCol + 2);
                     j++
                 ) {
-                    // check if square has a ship is if square is another ship neighbour
+                    // check if square has a ship or if square is another ship neighbour
                     if (
                         this.board[i][j].getHasShip() ||
                         this.board[i][j].getIsBattleshipNeighbour()
@@ -100,6 +100,7 @@ public class Board {
                 }
             }
         } else {
+            // does the same for horizontal but now ship size is added to rows when iterating
             for (
                 int i = Math.max(0, shipSquareRow - 1);
                 i < Math.min(this.board.length, shipSquareRow + 2);
@@ -197,7 +198,7 @@ public class Board {
         return boardStr;
     }
 
-    // used in the beginning of a game to display fleet location
+    // used in the beginning of the game to display fleet location
     public void printShips() {
         String boardStr = "";
         for (Square[] boardRow : this.board) {
